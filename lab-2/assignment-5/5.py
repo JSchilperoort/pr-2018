@@ -14,19 +14,18 @@ def righthand(sigma, mu, left):
 	x1x2 = ((sigmainv[1,0] + sigmainv[0,1]) / 2)
 	f = np.log(left) -  ((sigmainv[0,0]*-mu[0,0]*-mu[0,0] + sigmainv[1,0]*-mu[1,0]*-mu[0,0] + sigmainv[1,0]*-mu[0,0]*-mu[1,0] + sigmainv[1,1]*-mu[1,0]*-mu[1,0])/2)
 
-	""""
-	print(x1exp)
-	print(x1x2)
-	print(x1)
-	print(x2exp)
-	print(x2)
-	print(f)
-	"""
 	#print(str(-x1exp)+"x1^2 " + str(-x2exp)+"x2^2 + "+str(-x1x2)+"x1x2 + "+ str(x1)+"x1 "  + str(x2)+"x2 " +str(f))
-	formula = str(-x1exp)+"x1^2 + " + str(-x2exp)+"x2^2 + "+str(-x1x2)+"x1x2 + "+ str(x1)+"x1 + "  + str(x2)+"x2 + " +str(f)
+	#formula = str(-x1exp)+"x1^2 + " + str(-x2exp)+"x2^2 + "+str(-x1x2)+"x1x2 + "+ str(x1)+"x1 + "  + str(x2)+"x2 + " +str(f)
+
+	formula = [-x1exp, -x2exp, -x1x2, x1, x2, f]
 	return formula
 
-	#print(str(-x1exp)+"x1^2 "+str(-x1x2)+"x1x2 + "+ str(x1)+"x1 " + str(-x2exp)+"x2^2 + " + str(x2)+"x2" +str(f))
+def print_formula(g, formula):
+	print(g + " = " + str(formula[0])+"x1^2 + " + str(formula[1])+"x2^2 + "+str(formula[2])+"x1x2 + "+ str(formula[3])+"x1 + "  + str(formula[4])+"x2 + " +str(formula[5]))
+
+def decision_boundary(formula1, formula2):
+	formula = [formula1[0]-formula2[0],  formula1[1]-formula2[1], formula1[2]-formula2[2],  formula1[3]-formula2[3],  formula1[4]-formula2[4],  formula1[5]-formula2[5]]
+	return formula
 
 def main():
 	sigma1 = np.matrix('1 0;0 4')
@@ -47,8 +46,10 @@ def main():
 	left2 = lefthand(sigma2, d)
 	g1 = righthand(sigma1, mu1, left1)
 	g2 = righthand(sigma2, mu2, left2)
-	print("g1 = " + g1)
-	print("g2 = " + g2)
+	db = decision_boundary(g1, g2)
+	print_formula("g1", g1)
+	print_formula("g2", g2)
+	print_formula("decision boundary", db)
 
 
 main()
