@@ -42,12 +42,13 @@ def main():
 		p_nonspam *= P_nonspam
 
 
-		print("Probability of spam nominator: " + str(p_nonspam))
-		print("Probability of non-spam nominator: " + str(p_spam))
+		print("Probability of spam nominator: " + str(p_spam))
+		print("Probability of non-spam nominator: " + str(p_nonspam))
 
 		print("Probability of spam: " + str(p_spam/p_nonspam))
 		print("Probability of non-spam: " + str(p_nonspam/p_spam))
 		print("\n")
 
-main()
+if __name__ == "__main__":
+	main()
 

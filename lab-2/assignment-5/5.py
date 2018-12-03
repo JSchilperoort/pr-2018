@@ -52,4 +52,5 @@ def main():
 	print_formula("decision boundary", db)
 
 
-main()
+if __name__ == "__main__":
+	main()
