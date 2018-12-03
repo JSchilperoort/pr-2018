@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7d431b0-e8d8-4544-bbe8-816118baba8b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lab-2/assignment-5/5.py" afterPath="$PROJECT_DIR$/lab-2/assignment-5/5.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lab-2/assignment-6/6.py" afterPath="$PROJECT_DIR$/lab-2/assignment-6/6.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lab-2/assignment-3/matlab.mat" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
