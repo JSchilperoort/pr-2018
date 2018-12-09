@@ -9,6 +9,19 @@ nr_of_classes = 2;
 % Class labels
 class_labels = floor( (0:length(data)-1) * nr_of_classes / length(data) );
 
+
+function class = KNN(dims, K, data, class_labels)
+  distances = zeros(size(data));
+  for i=1:length(data)
+    points = [dims;data(i,:)];
+    distance = pdist(points, 'euclidean');
+    distances(i) = distance;
+  end;
+  [distances_sorted, distances_order] = sort(distances);
+  class_sorted = class_labels(distances_order);
+  class = mode(class_sorted(1:K));
+end;
+
 % Sample the parameter space
 result=zeros(samples);
 for i=1:samples
