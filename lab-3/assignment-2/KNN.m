@@ -12,3 +12,4 @@ function class = KNN(dims, K, data, class_labels)
   class = mode(class_sorted(1:K));
  % disp(class);
 end
+
