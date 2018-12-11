@@ -10,6 +10,6 @@ function class = KNN(dims, K, data, class_labels)
   [distances_sorted, distances_order] = sort(distances);
   class_sorted = class_labels(distances_order);
   class = mode(class_sorted(1:K));
- % disp(class);
+%   disp(class);
 end
 
