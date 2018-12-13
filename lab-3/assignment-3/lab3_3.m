@@ -12,7 +12,7 @@ function f = lab_3_3()
     u = [0.5;1.0;0.0];
     v = [0.31;1.51;-0.50];
     w = [-1.7;-1.7;-1.7];
-
+    
     fprintf("The probability density of class 1 in point u is %4.6f \n", compute_density(x1, u, 1));
     fprintf("The probability density of class 2 in point u is %4.6f \n", compute_density(x2, u, 1));
     fprintf("The probability density of class 3 in point u is %4.6f \n \n", compute_density(x3, u, 1));
@@ -43,6 +43,7 @@ function f = lab_3_3()
 
     function f = posterior(h)
         fprintf("h = %d\n", h);
+        prior = 1/3;
         posterior = compute_density(x1, u, h) / (compute_density(x1, u, h) + compute_density(x2, u, h) + compute_density(x3, u, h));
         fprintf("The posterior probability of class k = 1 for point u is %4.6f \n", posterior);
         posterior = compute_density(x2, u, h) / (compute_density(x1, u, h) + compute_density(x2, u, h) + compute_density(x3, u, h));
