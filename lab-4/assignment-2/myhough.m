@@ -1,9 +1,6 @@
-function [H, theta, rho] = myhough(edge_map)
+function [H, theta, rho_range] = myhough(edge_map)
        
     % load image and create edge map
-    c = imread('Cameraman.tif');
-    edge_map = edge(c, 'canny');
-    imshow(edge_map);
     [y,x] = find(edge_map);
     
     % values for theta:
@@ -46,27 +43,5 @@ function [H, theta, rho] = myhough(edge_map)
             t = theta(i);
             H(row(i)+abs(min_rho)+1, i) = H(row(i)+abs(min_rho)+1, i) + 1;
         end
-        
     end
-    
-    % plot of own implementation
-    subplot(1,2,1);
-    imshow(imadjust(mat2gray(H)),[], 'XData',theta,'YData',rho_range,'InitialMagnification','fit');
-    xlabel('\theta	(degrees)');
-    ylabel('\rho')
-    axis on
-    axis normal	
-    colormap(hot)
-    title('myhough.m')
-    
-    % plot of built-in function
-    subplot(1,2,2);
-    [H2,theta2,rho2] = hough(edge_map);	
-    imshow(imadjust(mat2gray(H2)),[], 'XData',theta2,'YData',rho2,'InitialMagnification','fit');
-    xlabel('\theta	(degrees)');
-    ylabel('\rho')
-    axis on
-    axis normal	
-    colormap(hot)
-    title('Matlab built-in function')
 end
