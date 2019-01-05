@@ -24,11 +24,10 @@ function f = lab5_2()
     
     Ka = 2;
     Kb = 1;
-    prototypes = lvq1(Ka, A, Kb, B);
-    disp(prototypes);
+    P = size(data, 1);
+    epochs = 200;
+    n = 0.01;
+    [error, prototypes] = lvq1(epochs, P, data, [Ka Kb], n);
+    disp(error(end));
 
-end
-
-function prototypes = lvq1(Ka, A, Kb, B)
-    prototypes = rand(Ka+Kb,2) * 10;
 end

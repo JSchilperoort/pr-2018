@@ -18,17 +18,14 @@ function f = lab5_2()
         i = i + 1;
         j = j + 1;
     end
-    % convert data into K equally siz
+    % convert data into K equally sized partitions
     [r,c] = size(data);
     partitions = permute(reshape(data',[c,r/k,k]),[2,1,3]);
     
     Ka = 2;
     Kb = 1;
     prototypes = lvq1(Ka, A, Kb, B);
+    lvq1(epochs, P, data, K, n)
     disp(prototypes);
 
-end
-
-function prototypes = lvq1(Ka, A, Kb, B)
-    prototypes = rand(Ka+Kb,2) * 10;
 end
