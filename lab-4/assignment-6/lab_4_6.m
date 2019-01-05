@@ -29,4 +29,4 @@ mask(distFromCenter<=radius)=1;
 fs=fs.*(~mask);
 f = ifftshift(fs);
 I = real(ifft2(f));
-figure, imshow(I, []), title('s2984318');
+figure, imshow(I, []), title('s2788659');
