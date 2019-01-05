@@ -22,7 +22,7 @@ function f = lab5_1()
     % N the learning rate and epochs the number of epochs
     K = [2, 1];
     n = 0.01;
-    epochs = 200;
+    epochs = 400;
 
     [Error, prototypes] = lvq1(epochs, P, data, K, n);
     
@@ -38,6 +38,7 @@ function f = lab5_1()
     fig2 = figure(2);
 
     %Plot the error over time
+
     plot(1:epochs, Error ./ P .* 100);
     ylim([0 100]);
     xlabel("Time")
@@ -45,26 +46,16 @@ function f = lab5_1()
     title("Error over time")
     saveas(fig2,"lab5_4.png")
     
-    hold off
-    fig3 = figure(3);
-    Ks = [1 1; 1 2; 2 1; 2 2];
+    
+    Error_array = zeros(epochs, 1, 4);
+    prototypes_array = zeros(4,2,4);
+    Ks = [1 1; 1 2; 2 1; 2 2]
     for i = 1:4
-        hold on
-        K = Ks(i, :);
-        [Error, prototypes] = lvq1(epochs, P, data, K, n);
-        %Plot the errors over time
-        plot(1:epochs, Error ./ P .* 100);
-        ylim([0 100]);
+        K = Ks(i, :)
+        [Error_array(:,:,i), prototypes_array(:,:,i] = lvq1(epochs, P, data, K, n);
+            
         
     end
-    legend('A=1, B=1','A=1, B=2','A=2, B=1','A=2, B=2');
-    xlabel("Time")
-    ylabel("Misclassificaion error in %")
-    title("Error over time")
-    saveas(fig3,"lab5_5.png")
-
-
-    
     
 end
 
@@ -99,7 +90,7 @@ function [Error, prototypes] = lvq1(epochs, P, data, K, n)
 
             % Get the class for the prototype
             prototype_class = 1;
-            if (winner_idx > K(1))
+            if (winner_idx > K)
                 prototype_class = 2;
             end
 
