@@ -76,7 +76,7 @@ function f = lab5_1()
     figure(3);
     legend('A=1, B=1','A=1, B=2','A=2, B=1','A=2, B=2');
     xlabel("Time");
-    ylabel("Misclassificaion error in %");
+    ylabel("Misclassification error in %");
     title("Error over time");
     saveas(fig3,"lab5_5.png");
     
