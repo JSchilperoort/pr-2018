@@ -1,4 +1,4 @@
-function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data, K, n)
+function [Error, prototypes, lambda_A, lambda_B, lambdas] = lvq_relevance(epochs, P, data, K, n)
 % Choose K random datapoints as prototypes
     init_perm_class1 = randperm(P/2, K(1)); 
     init_perm_class2 = randperm(P/2, K(2)) + P/2;
@@ -56,21 +56,19 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
                 % Misclassified if it reaches this so add one to error
                 Error(t) = Error(t) + 1;
                 if (prototype_class == 1)
-                    %   Prototype A
+                    %   Prototype A, update lambda
                     lambda_A = lambda_A + (n_lambda * winner_dist);
                 else
-                    %   prototype B
+                    %   prototype B, update lambda
                     lambda_B = lambda_B + (n_lambda * winner_dist);
                 end
             else
                 % classification = correct
                 if (prototype_class == 1)
-                    %   Winner A 
-%                     lambda_A = lambda_A + 0.001*psi;
+                    %   Winner A, update lambda
                     lambda_A = max(lambda_A - (n_lambda * winner_dist), 0);
                 else
-                    %   Winner B
-%                     lambda_B = lambda_B + 0.001*psi;
+                    %   Winner B, update lambda
                     lambda_B = max(lambda_B - (n_lambda * winner_dist), 0);
                 end
             end
@@ -84,8 +82,8 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
             % Update the winner
             prototypes(winner_idx, :) = prototypes(winner_idx,:) + n * psi *(example - prototypes(winner_idx,:));
         end
-        if t > 5
-            if sum(Error(t) > Error(t-5:t-1)) == 5
+        if t > 25
+            if sum(Error(t) > Error(t-25:t-1)) == 25
                 Error = Error(1:t);
                 break
             end
@@ -94,6 +92,7 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
     fig = figure(3);
     hold on
     plot(1:t, Error(1:t))
+    lambdas = lambdas(2:end,:);
 %     hold on
 %     plot(1:size(lambdas, 1), lambdas(:,2))
 end
