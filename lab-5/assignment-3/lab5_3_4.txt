@@ -1,0 +1,6 @@
+
+dist_to_A = min(lambda_A * pdist2(test_data(i,:), prototypes_A));
+
+dist_to_B = min(lambda_B * pdist2(test_data(i,:), prototypes_B));
+
+

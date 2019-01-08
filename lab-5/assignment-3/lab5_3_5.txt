@@ -1,0 +1,7 @@
+LVQ1 classification error: 27%
+
+LVQ relevance: 24%
+
+
+
+The results are a little better for relevance learning
