@@ -37,9 +37,7 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
             distances = [distancesA; distancesB];
             [val, winner_idx] = min(distances);
             
-            %   TODO: 
-            %   Implement update rule for lambda_A and lambda_B
-            
+
             % Update the winner
 
             % Get the class for the prototype
@@ -55,6 +53,15 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
                 % Misclassified if it reaches this so add one to error
                 Error(t) = Error(t) + 1;
             end
+			
+            if (prototype_class == 1)
+                    %   Winner A 
+                    lambda_A = lambda_A + 0.001*psi;
+            else
+                    %   Winner B
+                    lambda_B = lambda_B + 0.001*psi;
+            end
+            
             % Update the winner
             prototypes(winner_idx, :) = prototypes(winner_idx,:) + n * psi *(example - prototypes(winner_idx,:));
         end   
