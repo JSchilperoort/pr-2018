@@ -21,12 +21,13 @@ function f = lab5_3()
     % convert data into 'folds' equally sized partitions
     [r,c] = size(data);
     partitions = permute(reshape(data',[c,r/folds,folds]),[2,1,3]);
-    epochs = 300;
+    epochs = 200;
     n = 0.01;
     K = [2, 1];
     training_error = zeros(folds,1);
     classification_error = zeros(folds,1);
     for i = 1:folds
+        disp(i)
         [train_data, test_data] = get_train_data(partitions, i, folds);
         P_train = size(train_data, 1);
         P_test = size(test_data, 1);

@@ -12,6 +12,8 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
     % Initialize relevances
     lambda_A = 0.5;
     lambda_B = 0.5;
+    n_lambda = 0.0001;
+    lambdas = [0 0];
     
     % Iterate over all the epochs
     for t = 1:epochs
@@ -36,8 +38,9 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
             distancesB = lambda_B * pdist2(prototypes(K(1)+1:end,:), example);
             distances = [distancesA; distancesB];
             [val, winner_idx] = min(distances);
-            
-
+            winner_dist = pdist2(prototypes(winner_idx, :), example);
+           
+           
             % Update the winner
 
             % Get the class for the prototype
@@ -52,18 +55,45 @@ function [Error, prototypes, lambda_A, lambda_B] = lvq_relevance(epochs, P, data
                 psi = -1;
                 % Misclassified if it reaches this so add one to error
                 Error(t) = Error(t) + 1;
-            end
-			
-            if (prototype_class == 1)
-                    %   Winner A 
-                    lambda_A = lambda_A + 0.001*psi;
+                if (prototype_class == 1)
+                    %   Prototype A
+                    lambda_A = lambda_A + (n_lambda * winner_dist);
+                else
+                    %   prototype B
+                    lambda_B = lambda_B + (n_lambda * winner_dist);
+                end
             else
+                % classification = correct
+                if (prototype_class == 1)
+                    %   Winner A 
+%                     lambda_A = lambda_A + 0.001*psi;
+                    lambda_A = max(lambda_A - (n_lambda * winner_dist), 0);
+                else
                     %   Winner B
-                    lambda_B = lambda_B + 0.001*psi;
+%                     lambda_B = lambda_B + 0.001*psi;
+                    lambda_B = max(lambda_B - (n_lambda * winner_dist), 0);
+                end
             end
             
+            %normalize lambdas
+            lambda_sum = lambda_A + lambda_B;
+            lambda_A = lambda_A / lambda_sum;
+            lambda_B = lambda_B / lambda_sum;
+            lambdas = [lambdas; lambda_A lambda_B];
+			
             % Update the winner
             prototypes(winner_idx, :) = prototypes(winner_idx,:) + n * psi *(example - prototypes(winner_idx,:));
-        end   
+        end
+        if t > 5
+            if sum(Error(t) > Error(t-5:t-1)) == 5
+                Error = Error(1:t);
+                break
+            end
+        end
     end
+    fig = figure(3);
+    hold on
+    plot(1:t, Error(1:t))
+%     hold on
+%     plot(1:size(lambdas, 1), lambdas(:,2))
 end
