@@ -1,4 +1,4 @@
-function [prototypes, data, all_prototypes] = k_means(data, k)
+function [prototypes, data, all_prototypes, quantization_error] = k_means(data, k)
     
     % random order of all indices
     indices = randperm(size(data,1));
@@ -36,5 +36,14 @@ function [prototypes, data, all_prototypes] = k_means(data, k)
             end
         end  
     end 
+    quantization_error = get_quantization_error(data, prototypes);
     all_prototypes = all_prototypes(:,:,1:p_i);
+end
+
+function qe = get_quantization_error(data, prototypes)
+    qe = 0;
+    for i = 1:size(data, 1)
+        qe = qe + pdist2(prototypes(data(i,3),:), data(i,1:2),'squaredeuclidean');
+    end
+    qe = qe / 2;
 end

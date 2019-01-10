@@ -1,10 +1,12 @@
-function prototypes = k_means(data, k)
-%     scatter(data(:,1), data(:,2))
+function [prototypes, data, all_prototypes, quantization_error] = k_means(data, k)
     
     % random order of all indices
     indices = randperm(size(data,1));
     % take first k indices of data as initial prototypes
     prototypes = data(indices(1:k),:);
+    all_prototypes = zeros(k, 2, 999999);
+    p_i = 1;
+    all_prototypes(:,:,p_i) = prototypes;
     % add column to data to store class
     data = [data zeros(size(data,1),1)];
     
@@ -16,26 +18,30 @@ function prototypes = k_means(data, k)
         for i = 1:size(data,1)
             % find nearest prototype
             [val, nearest_prototype] = min(pdist2(prototypes, data(i,1:2)));
-            if data(i,3) ~= nearest_prototype
-                % if prototype is new, update it and set 'has_changed'
-                data(i,3) = nearest_prototype;
-                has_changed = 1;
-            end
+            data(i,3) = nearest_prototype;
         end
         
         % update prototypes as the mean of their clusters
         for i = 1:size(prototypes,1)
             for j = 1:k
-                new_prototype = mean(data(data(:,2)==j,1:2));
-                if prototypes(j) ~= new_prototype:
-                en
+                new_prototype = mean(data(data(:,3)==j,1:2));
+                % check whether the prototype changes, if so set
+                % has_changed
+                if prototypes(j,:) ~= new_prototype
+                    prototypes(j,:) = new_prototype;
+                    p_i = p_i + 1;
+                    all_prototypes(:,:,p_i) = prototypes;
+                    has_changed = 1;
+                end
             end
-        end
-        
-    end
-    
+        end  
+    end 
+    quantization_error = get_quantization_error(data, prototypes);
+    all_prototypes = all_prototypes(:,:,1:p_i);
 end
 
-function new_data = transform_data(data)
-    new_data = [data zeros(size(data,1),1)];
+function qe = get_quantization_error(data, prototypes)
+    for i = 1:size(data, 1)
+        distance = pdist2(prototypes(data(3,::, data(i,1:2))
+    end
 end
