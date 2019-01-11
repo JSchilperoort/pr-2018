@@ -1,0 +1,50 @@
+1.
+	file: k_means1.m
+
+
+2. 	
+	file: lab6_1_2.png
+
+
+3. 
+	file: lab6_1_3.png
+
+
+4.
+	file: lab6_1_4.png
+
+
+5. 
+	file: lab6_1_5.png
+
+
+6.
+	file: lab6_1_from_4.m
+
+
+7.
+	2
+
+
+8. 
+	file: k_means.m
+
+
+9.
+	6.11
+
+
+10.
+	0.27
+
+
+11.
+	6.88
+
+
+12.
+	0.22
+
+
+13.
+	0.00000

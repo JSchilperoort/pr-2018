@@ -8,7 +8,7 @@ function f = lab6_1()
     for i = 1:size(ks,2)
         fig1 = figure(1);
         hold on
-        [prototypes, clusters, all_prototypes, quantization_error] = k_means(data, ks(i));
+        [prototypes, clusters, all_prototypes] = k_means1(data, ks(i));
         subplot(2,2,i);
         title(strcat('k=', num2str(ks(i))));
         hold on
