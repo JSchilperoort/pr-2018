@@ -1,6 +1,8 @@
 function [prototypes, data, all_prototypes, quantization_error] = k_means(data, k, prototype_initialization)
     if prototype_initialization == "++"
         prototypes = plusplus_prototype_initialization(data, k);
+    elseif prototype_initialization == "from_data"
+        prototypes = from_data_prototype_initialization(data, k);
     else
         prototypes = regular_prototype_initialization(data, k);
     end
@@ -9,8 +11,16 @@ function [prototypes, data, all_prototypes, quantization_error] = k_means(data, 
     % add column to data to store class
     data = [data zeros(size(data,1),1)];
     
+    % maximum number of iterations the algorithm is allowed to take
+    max_epoch = 500;
+    
     has_changed = 1;
+    time_elapsed = 0;
     while has_changed
+        time_elapsed = time_elapsed + 1;
+        if time_elapsed > max_epoch
+            break
+        end
         has_changed = 0;
         
         % assign all data points to their nearest prototype
@@ -19,21 +29,18 @@ function [prototypes, data, all_prototypes, quantization_error] = k_means(data, 
             [val, nearest_prototype] = min(pdist2(prototypes, data(i,1:2)));
             data(i,3) = nearest_prototype;
         end
-        
         % update prototypes as the mean of their clusters
-        for i = 1:size(prototypes,1)
-            for j = 1:k
-                new_prototype = mean(data(data(:,3)==j,1:2));
-                % check whether the prototype changes, if so set
-                % has_changed
-                if prototypes(j,:) ~= new_prototype
-                    prototypes(j,:) = new_prototype;
-                    % append prototypes to set of all prototypes
-                    all_prototypes = cat(3,all_prototypes,prototypes);
-                    has_changed = 1;
-                end
+        for j = 1:k
+            new_prototype = mean(data(data(:,3)==j,1:2));
+            % check whether the prototype changes, if so set
+            % has_changed
+            if prototypes(j,:) ~= new_prototype
+                prototypes(j,:) = new_prototype;
+                % append prototypes to set of all prototypes
+                all_prototypes = cat(3,all_prototypes,prototypes);
+                has_changed = 1;
             end
-        end  
+        end
     end 
     quantization_error = get_quantization_error(data, prototypes);
 end
@@ -45,47 +52,41 @@ function prototypes = regular_prototype_initialization(data, k)
     prototypes = data(indices(1:k),1:2);
 end
 
+function prototypes = from_data_prototype_initialization(data, k)
+    prototypes = importdata('../data/clusterCentroids.mat');
+
+end
+
 function prototypes = plusplus_prototype_initialization(data, k)
     % initialize first prototype as random data point from 'data'
     index = randi(size(data,1));
     prototypes = data(index,:);
     
-    t1 = 0;
-    t2 = 0;
-    t3 = 0;
     
     % initialize distances
-    d_x = pdist2(data(:,1:2), prototypes).^2
+    d_x = pdist2(data(:,1:2), prototypes).^2;
+    
+    min_d_x = zeros(size(data,1), 1);
+    
     % set the other prototypes
     for p = 2:k
-        % initialize distance vector
-        d_x = zeros(size(data,1), 1);
-        d_x = pdist2(data(:,1:2), prototypes(p,:).^2;
-        
-        
-        
         % loop over all data points
-        tic
         for i = 1:size(data,1)
-                % find distance to new prototype
-                d_x(i) = min(pdist2(prototypes, data(i,1:2))).^2;
+                % find min distance to prototype
+%                 min_d_x(i) = min(pdist2(prototypes, data(i,1:2))).^2;
+                min_d_x(i) = min(d_x(i,:));
         end
-        t1 = t1 + toc;
         % random index with probability based on the squared distances to
         % the nearest prototype 
-        tic
-        index = ceil(randpdf(d_x, 1:size(d_x,1), [1 1]));
-        t2 = t2 + toc;
+
+        index = ceil(randpdf(min_d_x, 1:size(min_d_x,1), [1 1]));
         
-        tic
         new_prototype = data(index,1:2);
         prototypes = [prototypes; new_prototype];
-        t3 = t3 + toc;
+        d_x = [d_x pdist2(data(:,1:2), prototypes(p,:)).^2];
         
     end
-    fprintf('t1 = %f\n', t1);
-    fprintf('t2 = %f\n', t2);
-    fprintf('t3 = %f\n', t3);
+
 end
 
 function qe = get_quantization_error(data, prototypes)

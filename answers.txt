@@ -1,0 +1,26 @@
+Question 1:
+	File: batchNG.m
+
+Question 2:
+	File: lab6_2_2.png
+
+Question 3: 
+	File: lab6_2_3.png
+
+Question 4:
+	K-means:
+
+		Advantages:
+			Converges faster
+			More intuitive implementation
+		Disadvantages:
+			Worse performance at convergence
+			In our example takes more time to reach the same quantization error
+	Batch Neural Gas:
+
+		Advanta﻿ges:﻿
+			Better performance in terms of quantization error
+			Faster at the same quantization error as K-means at convergence
+		Disadvantages:
+			Takes longer to converge
+			More complex implementation

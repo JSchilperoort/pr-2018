@@ -1,0 +1,49 @@
+function f = lab6_2()
+    data = importdata('../data/checkerboard.mat');
+    
+    k = 100;
+    
+    
+    % Neural gas
+    epochs = [20 100 200 500];
+    
+    prototypes = importdata('../data/clusterCentroids.mat');
+    
+    fig1 = figure(1);
+    hold on
+    sgtitle("Final clusters from neural gas");
+    for i = 1:size(epochs,2)
+        disp(epochs(i))
+        [prototypes, clusters, qe] = batchNG(data, k, epochs(i));
+        subplot(3, 2, i);
+        title(strcat("Clusters after ", num2str(epochs(i)), " epochs,  qe = ", num2str(qe)));
+        hold on
+        for j = 1:k
+            cluster = clusters(clusters(:,3)==j,1:2);
+            scatter(cluster(:,1), cluster(:,2));
+        end
+        scatter(prototypes(:,1), prototypes(:,2),...
+            'MarkerEdgeColor',[1 1 1],...
+            'MarkerFaceColor',[0 0 0])
+        voronoi(prototypes(:,1),prototypes(:,2))
+    end
+
+    % K-means
+    fig2 = figure(2);
+    hold on
+    [prototypes, clusters, all_prototypes, qe] = k_means(data, k, 'from_data');
+    title(strcat("Final clusters from k-means, qe =  ", num2str(qe)));
+    for j = 1:k
+        cluster = clusters(clusters(:,3)==j,1:2);
+        scatter(cluster(:,1), cluster(:,2));
+    end
+    scatter(prototypes(:,1), prototypes(:,2),...
+        'MarkerEdgeColor',[1 1 1],...
+        'MarkerFaceColor',[0 0 0])
+    voronoi(prototypes(:,1),prototypes(:,2))
+        
+    saveas(fig2,"lab6_2_3.png")
+    
+    
+    
+end
